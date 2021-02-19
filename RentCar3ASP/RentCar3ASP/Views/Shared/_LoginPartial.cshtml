@@ -22,7 +22,7 @@
 
             
         </li>
-        <li><a href="javascript:document.getElementById('logoutForm').submit()">Se déconnecter</a></li>
+        <li><a href="javascript:document.getElementById('logoutForm').submit()">Sign out</a></li>
         @if (Roles.IsUserInRole("user"))
         {
                 <li>@Html.ActionLink("Car", "index", "Car")</li>
