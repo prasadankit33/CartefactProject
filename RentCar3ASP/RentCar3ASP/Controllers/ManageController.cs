@@ -326,7 +326,7 @@ namespace RentCar3ASP.Controllers
                 AddErrors(result);
             }
 
-            //If we got there something failed, redisplay the for
+            //If we got there something failed, redisplay the form
             return View(model);
         }
 

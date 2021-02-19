@@ -469,7 +469,7 @@ namespace RentCar3ASP.Controllers
         }
 
         #region Applications auxiliaires
-        // Utilisé(e) pour la protection XSRF lors de l'ajout de connexions externes
+        //Used for XSRF protection when adding external connections
         private const string XsrfKey = "XsrfId";
 
         private IAuthenticationManager AuthenticationManager
