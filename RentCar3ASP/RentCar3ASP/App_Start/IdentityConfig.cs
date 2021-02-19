@@ -18,7 +18,6 @@ namespace RentCar3ASP
     {
         public Task SendAsync(IdentityMessage message)
         {
-            // Indiquez votre service de messagerie ici pour envoyer un e-mail.
             return Task.FromResult(0);
         }
     }
@@ -27,12 +26,10 @@ namespace RentCar3ASP
     {
         public Task SendAsync(IdentityMessage message)
         {
-            // Connectez votre service SMS ici pour envoyer un message texte.
             return Task.FromResult(0);
         }
     }
 
-    // Configurer l'application que le gestionnaire des utilisateurs a utilisée dans cette application. UserManager est défini dans ASP.NET Identity et est utilisé par l'application.
     public class ApplicationUserManager : UserManager<ApplicationUser>
     {
         public ApplicationUserManager(IUserStore<ApplicationUser> store)
@@ -43,14 +40,12 @@ namespace RentCar3ASP
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context) 
         {
             var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<ApplicationDbContext>()));
-            // Configurer la logique de validation pour les noms d'utilisateur
             manager.UserValidator = new UserValidator<ApplicationUser>(manager)
             {
                 AllowOnlyAlphanumericUserNames = false,
                 RequireUniqueEmail = true
             };
 
-            // Configurer la logique de validation pour les mots de passe
             manager.PasswordValidator = new PasswordValidator
             {
                 RequiredLength = 6,
@@ -60,21 +55,18 @@ namespace RentCar3ASP
                 RequireUppercase = true,
             };
 
-            // Configurer les valeurs par défaut du verrouillage de l'utilisateur
             manager.UserLockoutEnabledByDefault = true;
             manager.DefaultAccountLockoutTimeSpan = TimeSpan.FromMinutes(5);
             manager.MaxFailedAccessAttemptsBeforeLockout = 5;
 
-            // Inscrire les fournisseurs d'authentification à 2 facteurs. Cette application utilise le téléphone et les e-mails comme procédure de réception de code pour confirmer l'utilisateur
-            // Vous pouvez écrire votre propre fournisseur et le connecter ici.
-            manager.RegisterTwoFactorProvider("Code téléphonique ", new PhoneNumberTokenProvider<ApplicationUser>
+            manager.RegisterTwoFactorProvider("Telephone code ", new PhoneNumberTokenProvider<ApplicationUser>
             {
-                MessageFormat = "Votre code de sécurité est {0}"
+                MessageFormat = "Your security code is {0}"
             });
-            manager.RegisterTwoFactorProvider("Code d'e-mail", new EmailTokenProvider<ApplicationUser>
+            manager.RegisterTwoFactorProvider("Email code", new EmailTokenProvider<ApplicationUser>
             {
-                Subject = "Code de sécurité",
-                BodyFormat = "Votre code de sécurité est {0}"
+                Subject = "Security code",
+                BodyFormat = "Your security code is {0}"
             });
             manager.EmailService = new EmailService();
             manager.SmsService = new SmsService();
@@ -88,7 +80,6 @@ namespace RentCar3ASP
         }
     }
 
-    // Configurer le gestionnaire de connexion d'application qui est utilisé dans cette application.
     public class ApplicationSignInManager : SignInManager<ApplicationUser, string>
     {
         public ApplicationSignInManager(ApplicationUserManager userManager, IAuthenticationManager authenticationManager)

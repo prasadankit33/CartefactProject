@@ -15,7 +15,7 @@ namespace RentCar3ASP.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Cartfact description.";
+            ViewBag.Message = "Description.";
 
             return View();
         }

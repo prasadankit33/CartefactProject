@@ -15,11 +15,11 @@ namespace RentCar3ASP.Models
         public int IdCar { get; set; }
 
         [Required]
-        [Display(Name = "The brand")]
+        [Display(Name = "Brand")]
         public string Brand { get; set; }
 
         [Required]
-        [Display(Name = "The model")]
+        [Display(Name = "Model")]
         public string Model { get; set; }
 
         [Required]

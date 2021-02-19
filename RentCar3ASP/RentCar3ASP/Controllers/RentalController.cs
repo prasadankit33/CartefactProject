@@ -63,8 +63,6 @@ namespace RentCar3ASP.Controllers
         }
 
         // POST: Rental/Create
-        // Afin de déjouer les attaques par sur-validation, activez les propriétés spécifiques que vous voulez lier. Pour 
-        // plus de détails, voir  http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "IdRental,Start,End,Priceperday,Estimated_Km,PersonId")] RentalModels rentalModels)
@@ -96,8 +94,6 @@ namespace RentCar3ASP.Controllers
         }
 
         // POST: Rental/Edit/5
-        // Afin de déjouer les attaques par sur-validation, activez les propriétés spécifiques que vous voulez lier. Pour 
-        // plus de détails, voir  http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "IdRental,Start,End,Priceperday,Estimated_Km,PersonId")] RentalModels rentalModels)

@@ -1,14 +1,14 @@
 ﻿@model RentCar3ASP.Models.IndexViewModel
 
 @{
-    ViewBag.Title = "Gérer";
+    ViewBag.Title = "Manage";
 }
 
 <h2>@ViewBag.Title.</h2>
 
 <p class="text-success">@ViewBag.StatusMessage</p>
 <div>
-    <h4>Changer les paramètres de votre compte</h4>
+    <h4>Change your account settings</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>Mot de passe :</dt>
@@ -16,11 +16,11 @@
             [
             @if (Model.HasPassword)
             {
-                @Html.ActionLink("Changer votre mot de passe", "ChangePassword")
+            @Html.ActionLink("Change your password", "ChangePassword")
             }
             else
             {
-                @Html.ActionLink("Créer", "SetPassword")
+            @Html.ActionLink("Create", "SetPassword")
             }
             ]
         </dd>
@@ -38,6 +38,6 @@
 
 
 
-       
+
     </dl>
 </div>

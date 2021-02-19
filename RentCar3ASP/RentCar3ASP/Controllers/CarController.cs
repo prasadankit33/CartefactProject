@@ -86,8 +86,6 @@ namespace RentCar3ASP.Models
         }
 
         // POST: Car/Create
-        // Afin de déjouer les attaques par sur-validation, activez les propriétés spécifiques que vous voulez lier. Pour 
-        // plus de détails, voir  http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "IdCar,Brand,Model,Description,Buying_Date,Km,Status,Location")] CarModels carModels)
@@ -119,8 +117,6 @@ namespace RentCar3ASP.Models
         }
 
         // POST: Car/Edit/5
-        // Afin de déjouer les attaques par sur-validation, activez les propriétés spécifiques que vous voulez lier. Pour 
-        // plus de détails, voir  http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "IdCar,Brand,Model,Description,Buying_Date,Km")] CarModels carModels)

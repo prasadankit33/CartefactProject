@@ -15,11 +15,11 @@ namespace RentCar3ASP.Models
         public int IdRental { get; set; }
 
         [Required]
-        [Display(Name = "Rental Start")]
+        [Display(Name = "Rental Start Date Time")]
         public DateTime Start { get; set; }
 
         [Required]
-        [Display(Name = "Rental End")]
+        [Display(Name = "Rental End Date Time")]
         public DateTime End { get; set; }
 
         [Required]
@@ -27,7 +27,7 @@ namespace RentCar3ASP.Models
         public string Priceperday { get; set; }
 
         [Required]
-        [Display(Name = "estimated kilometers…")]
+        [Display(Name = "Estimated kilometers…")]
         public float Estimated_Km { get; set; }
 
         public virtual PersonModels Person { get; set; }

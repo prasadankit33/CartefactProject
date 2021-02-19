@@ -16,7 +16,7 @@ namespace RentCar3ASP.Models
 
         [Required]
         [EmailAddress]
-        [Display(Name = "Courrier électronique")]
+        [Display(Name = "Email")]
         public string Email { get; set; }
 
         [Required]

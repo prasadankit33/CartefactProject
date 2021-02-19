@@ -90,8 +90,6 @@ namespace RentCar3ASP.Controllers
             }
 
 
-            // Ceci ne comptabilise pas les échecs de connexion pour le verrouillage du compte
-            // Pour que les échecs de mot de passe déclenchent le verrouillage du compte, utilisez shouldLockout: true
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
 
          
@@ -119,7 +117,7 @@ namespace RentCar3ASP.Controllers
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Tentative de connexion non valide.");
+                    ModelState.AddModelError("", "Invalid connection attempt.");
                     return View(model);
             }
         }
@@ -129,7 +127,7 @@ namespace RentCar3ASP.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> VerifyCode(string provider, string returnUrl, bool rememberMe)
         {
-            // Nécessiter que l'utilisateur soit déjà connecté via un nom d'utilisateur/mot de passe ou une connexte externe
+            // Require that the user is already logged in via a username / password or an external connection
             if (!await SignInManager.HasBeenVerifiedAsync())
             {
                 return View("Error");
@@ -149,10 +147,6 @@ namespace RentCar3ASP.Controllers
                 return View(model);
             }
 
-            // Le code suivant protège des attaques par force brute contre les codes à 2 facteurs. 
-            // Si un utilisateur entre des codes incorrects pendant un certain intervalle, le compte de cet utilisateur 
-            // est alors verrouillé pendant une durée spécifiée. 
-            // Vous pouvez configurer les paramètres de verrouillage du compte dans IdentityConfig
             var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
@@ -162,7 +156,7 @@ namespace RentCar3ASP.Controllers
                     return View("Lockout");
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Code non valide.");
+                    ModelState.AddModelError("", "Invalid code.");
                     return View(model);
             }
         }
@@ -211,19 +205,18 @@ namespace RentCar3ASP.Controllers
 
 
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
-                    // Pour plus d'informations sur l'activation de la confirmation du compte et la réinitialisation du mot de passe, consultez http://go.microsoft.com/fwlink/?LinkID=320771
-                    // Envoyer un message électronique avec ce lien
+
+                    // Send an email message with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirmez votre compte", "Confirmez votre compte en cliquant <a href=\"" + callbackUrl + "\">ici</a>");
+                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Confirm your account by clicking <a href=\"" + callbackUrl + "\">ici</a>");
 
                     return RedirectToAction("Index", "Home");
                 }
                 AddErrors(result);
             }
 
-            // Si nous sommes arrivés là, un échec s’est produit. Réafficher le formulaire
+            // If we got here, failure has happened. Redisplay the form
             return View(model);
         }
 
@@ -260,19 +253,16 @@ namespace RentCar3ASP.Controllers
                 var user = await UserManager.FindByNameAsync(model.Email);
                 if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
                 {
-                    // Ne révélez pas que l'utilisateur n'existe pas ou qu'il n'est pas confirmé
                     return View("ForgotPasswordConfirmation");
                 }
 
-                // Pour plus d'informations sur l'activation de la confirmation du compte et la réinitialisation du mot de passe, consultez http://go.microsoft.com/fwlink/?LinkID=320771
-                // Envoyer un message électronique avec ce lien
                 // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
                 // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                // await UserManager.SendEmailAsync(user.Id, "Réinitialiser le mot de passe", "Réinitialisez votre mot de passe en cliquant <a href=\"" + callbackUrl + "\">ici</a>");
+                // await UserManager.SendEmailAsync(user.Id, "Reset password", "Reset your password by clicking<a href=\"" + callbackUrl + "\">ici</a>");
                 // return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
 
-            // Si nous sommes arrivés là, un échec s’est produit. Réafficher le formulaire
+            // If we got here, failure has happened. Redisplay the form
             return View(model);
         }
 
@@ -306,7 +296,7 @@ namespace RentCar3ASP.Controllers
             var user = await UserManager.FindByNameAsync(model.Email);
             if (user == null)
             {
-                // Ne révélez pas que l'utilisateur n'existe pas
+                // Do not reveal that the user does not exist
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
             }
             var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
@@ -333,7 +323,7 @@ namespace RentCar3ASP.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ExternalLogin(string provider, string returnUrl)
         {
-            // Demandez une redirection vers le fournisseur de connexions externe
+            // Request a redirect to the external connection provider
             return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
         }
 
@@ -364,7 +354,7 @@ namespace RentCar3ASP.Controllers
                 return View();
             }
 
-            // Générer le jeton et l'envoyer
+            // Generate the token and send it
             if (!await SignInManager.SendTwoFactorCodeAsync(model.SelectedProvider))
             {
                 return View("Error");
@@ -383,7 +373,7 @@ namespace RentCar3ASP.Controllers
                 return RedirectToAction("Login");
             }
 
-            // Connecter cet utilisateur à ce fournisseur de connexion externe si l'utilisateur possède déjà une connexion
+            // Connect this user to this external connection provider if the user already has a connection
             var result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
             switch (result)
             {
@@ -395,7 +385,7 @@ namespace RentCar3ASP.Controllers
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
                 case SignInStatus.Failure:
                 default:
-                    // Si l'utilisateur n'a pas de compte, invitez alors celui-ci à créer un compte
+                    // If the user does not have an account, then ask the user to create an account
                     ViewBag.ReturnUrl = returnUrl;
                     ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
                     return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
@@ -416,7 +406,7 @@ namespace RentCar3ASP.Controllers
 
             if (ModelState.IsValid)
             {
-                // Obtenez des informations sur l’utilisateur auprès du fournisseur de connexions externe
+                // Obtain user information from the external connection provider
                 var info = await AuthenticationManager.GetExternalLoginInfoAsync();
                 if (info == null)
                 {

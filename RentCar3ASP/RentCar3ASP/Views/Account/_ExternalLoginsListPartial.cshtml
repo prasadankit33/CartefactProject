@@ -1,15 +1,15 @@
 ﻿@model RentCar3ASP.Models.ExternalLoginListViewModel
 @using Microsoft.Owin.Security
 
-<h4>Utilisez un autre service pour vous connecter.</h4>
+<h4>Use another service to connect.</h4>
 <hr />
 @{
     var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
     if (loginProviders.Count() == 0) {
         <div>
             <p>
-                Il n'existe aucun service d'authentification externe configuré. Consultez <a href="http://go.microsoft.com/fwlink/?LinkId=403804">cet article</a>
-                pour des détails sur la configuration de cette application ASP.NET en vue de la prise en charge de la connexion via des services externes.
+                There is no configured external authentication service. Check out <a href="http://go.microsoft.com/fwlink/?LinkId=403804"> this article </a>
+                for details on configuring this ASP.NET application to support connecting through external services.
             </p>
         </div>
     }
@@ -19,7 +19,7 @@
             <div id="socialLoginList">
                 <p>
                     @foreach (AuthenticationDescription p in loginProviders) {
-                        <button type="submit" class="btn btn-default" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Connexion avec votre compte @p.Caption">@p.AuthenticationType</button>
+                        <button type="submit" class="btn btn-default" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Login with your account @p.Caption">@p.AuthenticationType</button>
                     }
                 </p>
             </div>
