@@ -91,7 +91,7 @@ namespace RentCar3ASP.Models
         [Required]
         [StringLength(100, ErrorMessage = "The string {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Mot de passe")]
+        [Display(Name = "Password")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
